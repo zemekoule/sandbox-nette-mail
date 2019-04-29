@@ -12,7 +12,7 @@ final class HomepagePresenter extends Nette\Application\UI\Presenter
 	public $mailSender;
 
 	public function actionDefault() {
-		set_time_limit(15);
+		//set_time_limit(15);
 
 //		header("Content-Type: image/jpg");
 //		$test = file_get_contents("https://static.booktook.cz/files/photos/x/a/a19e16c1d32293b46b70827c9591e4049be43944.jpg");
@@ -27,43 +27,43 @@ final class HomepagePresenter extends Nette\Application\UI\Presenter
 	{
 		$form = new Nette\Application\UI\Form();
 
-		$setRandomDataControl = $form->addCheckbox('setRandomData', 'Vyplnit náhodná data');
+		// = $form->addCheckbox('setRandomData', 'Vyplnit náhodná data');
 		$form->addEmail('emailTo', 'Email')
 			->setRequired('Zadejte email příjemce');
 		$form->addText('subject', 'Předmět')
-			->addConditionOn($setRandomDataControl, Form::EQUAL, false)
+			//->addConditionOn($setRandomDataControl, Form::EQUAL, false)
 				->setRequired('Zadejte předmět');
 		$form->addTextArea('message', 'Text emailu')
-			->addConditionOn($setRandomDataControl, Form::EQUAL, false)
+			//->addConditionOn($setRandomDataControl, Form::EQUAL, false)
 				->setRequired('Zadejte text zprávy');
-		$form->addCheckbox('customSettings', 'Odeslat přes vlastní smtp server')
-			->addCondition($form::EQUAL, true)
-			->toggle('emailFrom')
-			->toggle('host')
-			->toggle('username')
-			->toggle('password')
-			->toggle('port')
-			->toggle('secure');
-		$form->addEmail('emailFrom', 'Email odesílatele')
-			->setOption('id', 'emailFrom')
-			->addConditionOn($form['customSettings'], Form::EQUAL, true)
-				->setRequired('Zadejte email odesílatele');
-		$form->addText('host', 'Host:')
-			->setOption('id', 'host')
-			->addConditionOn($form['customSettings'], Form::EQUAL, true)
-				->setRequired('Zadejte host');
-		$form->addText('username', 'Přihl.jméno')
-			->setOption('id', 'username')
-			->addConditionOn($form['customSettings'], Form::EQUAL, true)
-				->setRequired('Zadejte přihlašovací jméno');
-		$form->addPassword('password', 'Zadejte heslo')
-			->setOption('id', 'password')
-			->addConditionOn($form['customSettings'], Form::EQUAL, true)
-				->setRequired('Zadejte heslo');
-		$form->addSelect('port', 'Port', [25, 465, 587,])
-			->setOption('id', 'port');
-		$form->addSelect('secure', 'Zabezpečení', ['none', 'ssl', 'tls'])
-			->setOption('id', 'secure');
+//		$form->addCheckbox('customSettings', 'Odeslat přes vlastní smtp server')
+//			->addCondition($form::EQUAL, true)
+//			->toggle('emailFrom')
+//			->toggle('host')
+//			->toggle('username')
+//			->toggle('password')
+//			->toggle('port')
+//			->toggle('secure');
+		//$form->addEmail('emailFrom', 'Email odesílatele')
+			//->setOption('id', 'emailFrom')
+			//->addConditionOn($form['customSettings'], Form::EQUAL, true)
+		//		->setRequired('Zadejte email odesílatele');
+//		$form->addText('host', 'Host:')
+//			->setOption('id', 'host')
+			//->addConditionOn($form['customSettings'], Form::EQUAL, true)
+				//->setRequired('Zadejte host');
+//		$form->addText('username', 'Přihl.jméno')
+//			->setOption('id', 'username')
+			//->addConditionOn($form['customSettings'], Form::EQUAL, true)
+		//		->setRequired('Zadejte přihlašovací jméno');
+//		$form->addPassword('password', 'Zadejte heslo')
+//			->setOption('id', 'password')
+			//->addConditionOn($form['customSettings'], Form::EQUAL, true)
+				//->setRequired('Zadejte heslo');
+//		$form->addSelect('port', 'Port', [25, 465, 587,])
+//			->setOption('id', 'port');
+//		$form->addSelect('secure', 'Zabezpečení', ['none', 'ssl', 'tls'])
+//			->setOption('id', 'secure');
 		$form->addSubmit('Odeslat');
 		$form->onSuccess[] = [$this, 'emailFormSucceeded'];
 
@@ -83,20 +83,22 @@ final class HomepagePresenter extends Nette\Application\UI\Presenter
 		//$mail->setFrom('info@web66.cz');
 		$mail->addTo($values->emailTo);
 		$mail->setSubject($values->subject);
-		$mail->setHtmlBody($values->message);
+		$mail->setBody($values->message);
 
-		if($values->customSettings) {
-			$customSettings = [
-				'host' => $values->host,
-				'username' => $values->username,
-				'password' => $values->password,
-				'port' => $values->port,
-				'secure' => $values->secure,
-			];
-		}
-		else $customSettings = null;
 
-		$this->mailSender->sendEmail($mail, $customSettings);
+
+//		if($values->customSettings) {
+//			$customSettings = [
+//				'host' => $values->host,
+//				'username' => $values->username,
+//				'password' => $values->password,
+//				'port' => $values->port,
+//				'secure' => $values->secure,
+//			];
+//		}
+//		else $customSettings = null;
+
+		$this->mailSender->sendEmail($mail);
 
 		$this->flashMessage('Email byl odeslán', 'success');
 		$this->redirect('this');

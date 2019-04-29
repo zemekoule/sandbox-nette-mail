@@ -19,7 +19,7 @@ class MailSender {
 		$this->templateFactory = $templateFactory;
 	}
 
-	public function sendEmail(Message $mail, ?array $customSettings = null) {
+	public function sendEmail(Message $mail) {
 
 		//$link = $this->linkGenerator->link('Sign:ResetPassword', ['id' => $code]);
 		//$body = str_replace('#link#', $link, $emailTemplate->text);
@@ -32,20 +32,22 @@ class MailSender {
 
 		//$this->mailer->commandArgs = '-finfo@webaplikace.eu';
 
-		if($customSettings) {
-			$mailer = new Nette\Mail\SmtpMailer([
-				'host' => $customSettings['host'],
-				'username' => $customSettings['username'],
-				'password' => $customSettings['password'],
-				'secure' => $customSettings['secure'],
-				'port' => $customSettings['port'],
-			]);
+		$this->mailer->send($mail);
 
-			$mailer->send($mail);
-		}
-		else {
-			$this->mailer->send($mail);
-		}
+//		if($customSettings) {
+//			$mailer = new Nette\Mail\SmtpMailer([
+//				'host' => $customSettings['host'],
+//				'username' => $customSettings['username'],
+//				'password' => $customSettings['password'],
+//				'secure' => $customSettings['secure'],
+//				'port' => $customSettings['port'],
+//			]);
+//
+//			$mailer->send($mail);
+//		}
+//		else {
+//			$this->mailer->send($mail);
+//		}
 	}
 
 	protected function createTemplate() {

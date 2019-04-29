@@ -1,0 +1,12 @@
+mail:
+    smtp: true # zapne SmtpMailer místo SendmailMailer
+    host:
+    username:
+    password:
+    port: 465
+    secure: ssl
+    context:
+       	ssl:
+       		verify_peer: false
+       		verify_peer_name: false
+       		allow_self_signed: true
